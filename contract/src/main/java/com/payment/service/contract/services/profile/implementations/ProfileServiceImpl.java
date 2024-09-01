@@ -53,15 +53,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile client = profileRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
 
         // Calculate the total outstanding payments for unpaid jobs
-        double totalOutstandingPayments = jobRepository.findByContractIdInAndIsPaidFalse(
-                        contractRepository.findByContractorIdOrClientId(userId)
-                                .stream()
-                                .filter(contract -> contract.getStatus() == ContractStatus.IN_PROGRESS)
-                                .map(Contract::getId)
-                                .toList()
-                .stream()
-                .mapToDouble(Job::getPrice)
-                .sum();
+        double totalOutstandingPayments = jobRepository.sumOutstandingPaymentsByUserId(userId).orElse(0.0);
 
         // Check if the deposit amount exceeds 25% of total outstanding payments
         if (amount > 0.25 * totalOutstandingPayments) {

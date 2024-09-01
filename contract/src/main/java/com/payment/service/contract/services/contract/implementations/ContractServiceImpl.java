@@ -27,14 +27,16 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Optional<Contract> getContractById(Integer id) {
-        return repository.findById(id);
+        var response = repository.findById(id);
+        System.out.println(response);
+        return response;
     }
 
     @Override
     public List<Contract> getActiveContractsByUserId(Integer userId) {
         List<Contract> contracts = repository.findByContractorIdOrClientId(userId);
         return contracts.stream()
-                .filter(contract -> contract.getStatus() == ContractStatus.IN_PROGRESS)
+                .filter(contract -> contract.getStatus() == ContractStatus.in_progress)
                 .collect(Collectors.toList());
     }
 

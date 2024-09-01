@@ -3,6 +3,9 @@ package com.payment.service.contract.services.admin.implementations;
 import com.payment.service.contract.models.Profile;
 import com.payment.service.contract.repositories.ProfileRepository;
 import com.payment.service.contract.services.admin.AdminService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,7 +31,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Profile> getBestClients(LocalDate start, LocalDate end, int limit) {
-        return profileRepository.findBestClients(start, end, limit);
+    public Page<Profile> getBestClients(LocalDate start, LocalDate end, int limit) {
+        if (limit <= 0) {
+            limit = 2;
+        }
+        Pageable pageable = PageRequest.of(0, limit);
+        return profileRepository.findBestClients(start, end, pageable);
     }
 }

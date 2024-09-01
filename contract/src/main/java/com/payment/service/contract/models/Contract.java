@@ -24,11 +24,11 @@ public class Contract {
     private ContractStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "contractorId", nullable = false)
+    @JoinColumn(name = "contractor_id", nullable = false)
     private Profile contractor;
 
     @ManyToOne
-    @JoinColumn(name = "clientId", nullable = false)
+    @JoinColumn(name = "client_id", nullable = false)
     private Profile client;
 
     @Column(name = "created_at", nullable = false)

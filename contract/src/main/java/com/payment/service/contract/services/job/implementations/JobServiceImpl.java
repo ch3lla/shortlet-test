@@ -44,7 +44,7 @@ public class JobServiceImpl implements JobService {
     public List<Job> getUnpaidJobsByUserId(Integer userId) {
         List<Contract> activeContracts = contractRepository.findByContractorIdOrClientId(userId)
                 .stream()
-                .filter(contract -> contract.getStatus() == ContractStatus.IN_PROGRESS)
+                .filter(contract -> contract.getStatus() == ContractStatus.in_progress)
                 .toList();
 
         List<Integer> activeContractIds = activeContracts.stream()

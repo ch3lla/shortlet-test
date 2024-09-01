@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/prfile")
+@RequestMapping("/api/v1/profile")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -20,10 +20,15 @@ public class ProfileController {
      * @param amount The amount to be deposited.
      * @return The updated profile with the new balance.
      */
-    @PostMapping("/deposit/{userId}")
-    public ResponseEntity<Profile> depositToBalance(@PathVariable Integer userId, @RequestParam Double amount) {
-        Profile updatedProfile = profileService.depositToBalance(userId, amount);
-        return ResponseEntity.ok(updatedProfile);
+    @PostMapping("/balances/deposit/{userId}")
+    public ResponseEntity<?> depositToBalance(@PathVariable Integer userId, @RequestParam Double amount) {
+        try {
+            Profile updatedProfile = profileService.depositToBalance(userId, amount);
+            return ResponseEntity.ok(updatedProfile);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 }

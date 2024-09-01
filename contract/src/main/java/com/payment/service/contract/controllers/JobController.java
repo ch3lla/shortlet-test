@@ -2,6 +2,7 @@ package com.payment.service.contract.controllers;
 
 import com.payment.service.contract.models.Job;
 import com.payment.service.contract.services.job.JobService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,13 @@ public class JobController {
      * @return The updated job.
      */
     @PostMapping("/{job_id}/pay")
-    public ResponseEntity<Job> payForJob(@PathVariable("job_id") Integer jobId, @RequestHeader("profileId") Integer profileId) {
-        Job paidJob = jobService.payForJob(jobId, profileId);
-        return ResponseEntity.ok(paidJob);
+    public ResponseEntity<?> payForJob(@PathVariable("job_id") Integer jobId, @RequestHeader("profileId") Integer profileId) {
+        try {
+            Job paidJob = jobService.payForJob(jobId, profileId);
+            return ResponseEntity.ok(paidJob);
+        } catch (Exception e) {
+            e.printStackTrace(); // todo: replace with logger
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error processing payment: " + e.getMessage());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.payment.service.contract.services.admin;
 
 import com.payment.service.contract.models.Profile;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +18,11 @@ public interface AdminService {
 
     /**
      * Get the clients who paid the most for jobs within the specified period.
+     *
      * @param start The start date.
-     * @param end The end date.
+     * @param end   The end date.
      * @param limit The maximum number of clients to return.
      * @return A list of the best clients.
      */
-    List<Profile> getBestClients(LocalDate start, LocalDate end, int limit);
+    Page<Profile> getBestClients(LocalDate start, LocalDate end, int limit);
 }

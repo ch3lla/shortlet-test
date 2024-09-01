@@ -2,6 +2,7 @@ package com.payment.service.contract.controllers;
 
 import com.payment.service.contract.models.Profile;
 import com.payment.service.contract.services.admin.AdminService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,16 +29,21 @@ public class AdminController {
      */
     @GetMapping("/best-profession")
     public ResponseEntity<String> getBestProfession(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
-        String bestProfession = adminService.getBestProfession(start, end);
-        return ResponseEntity.ok(bestProfession);
+        try {
+            String bestProfession = adminService.getBestProfession(start, end);
+            return ResponseEntity.ok(bestProfession);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @GetMapping("/best-clients")
-    public ResponseEntity<List<Profile>> getBestClients(
+    public ResponseEntity<Page<Profile>> getBestClients(
             @RequestParam("start") LocalDate start,
             @RequestParam("end") LocalDate end,
             @RequestParam(value = "limit", defaultValue = "2") int limit) {
-        List<Profile> bestClients = adminService.getBestClients(start, end, limit);
+        Page<Profile> bestClients = adminService.getBestClients(start, end, limit);
         return ResponseEntity.ok(bestClients);
     }
 }
