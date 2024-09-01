@@ -81,18 +81,6 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
 
   **Response:**
     - Returns a list of active contracts.
-  
-
-- **GET /api/v1/contracts**
-    
-    **Description:** Retrieves contact with given id associated to the user
-
-    **Request Header:**
-    - `profileId`: ID of the profile making the request.
- 
-
-**Response:**
-      Retrieves active contracts for a given user.
 
 ``[
     {
@@ -126,6 +114,52 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
         "updatedAt": "2024-09-01T11:30:37.66269"
     }
 ]``
+  
+
+- **GET /api/v1/contracts/{id}**
+    
+    **Description:** Retrieves contact with given id associated to the user
+
+    **Request param**
+    - `contractId`: ID of the contract 
+
+    **Request Header:**
+    - `profileId`: ID of the profile making the request.
+ 
+
+**Response:**
+      Retrieves specific contract.
+
+`` {
+    "id": 2,
+    "uuid": "623e4567-e89b-12d3-a456-426614174005",
+    "terms": "Design a logo",
+    "status": "NEW",
+    "contractor": {
+        "id": 2,
+        "uuid": "223e4567-e89b-12d3-a456-426614174001",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "profession": "Designer",
+        "balance": 1500.0,
+        "role": "contractor",
+        "createdAt": "2024-09-01T11:30:37.660611",
+        "updatedAt": "2024-09-01T11:30:37.660611"
+    },
+    "client": {
+        "id": 3,
+        "uuid": "323e4567-e89b-12d3-a456-426614174002",
+        "firstName": "Alice",
+        "lastName": "Johnson",
+        "profession": "Project Manager",
+        "balance": 4500.0,
+        "role": "client",
+        "createdAt": "2024-09-01T11:30:37.660611",
+        "updatedAt": "2024-09-01T11:59:14.137081"
+    },
+    "createdAt": "2024-09-01T11:30:37.66269",
+    "updatedAt": "2024-09-01T11:30:37.66269"
+}``
 
 ### Jobs
 
@@ -139,6 +173,50 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
   **Response:**
     - Returns a list of unpaid jobs.
 
+``
+[
+    {
+        "id": 1,
+        "uuid": "823e4567-e89b-12d3-a456-426614174007",
+        "description": "Frontend development",
+        "price": 500.0,
+        "isPaid": false,
+        "paidDate": null,
+        "contract": {
+            "id": 1,
+            "uuid": "523e4567-e89b-12d3-a456-426614174004",
+            "terms": "Develop a website",
+            "status": "in_progress",
+            "contractor": {
+                "id": 1,
+                "uuid": "123e4567-e89b-12d3-a456-426614174000",
+                "firstName": "John",
+                "lastName": "Doe",
+                "profession": "Developer",
+                "balance": 1000.0,
+                "role": "contractor",
+                "createdAt": "2024-09-01T16:51:00.035972",
+                "updatedAt": "2024-09-01T16:51:00.035972"
+            },
+            "client": {
+                "id": 3,
+                "uuid": "323e4567-e89b-12d3-a456-426614174002",
+                "firstName": "Alice",
+                "lastName": "Johnson",
+                "profession": "Project Manager",
+                "balance": 5000.0,
+                "role": "client",
+                "createdAt": "2024-09-01T16:51:00.035972",
+                "updatedAt": "2024-09-01T16:51:00.035972"
+            },
+            "createdAt": "2024-09-01T16:51:00.043242",
+            "updatedAt": "2024-09-01T16:51:00.043242"
+        },
+        "createdAt": "2024-09-01T16:51:00.051863",
+        "updatedAt": "2024-09-01T16:51:00.051863"
+    }
+]
+``
 - **POST /api/v1/jobs/{job_id}/pay**
 
   **Description:** Pays for a job. A client can only proceed if their balance is greater than or equal to the payment amount. If conditions are met, the payment amount is transferred from the client's balance to the contractor's balance.
@@ -152,7 +230,48 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
   **Response:**
     - Returns the updated job details.
 
-
+``
+{
+    "id": 1,
+    "uuid": "823e4567-e89b-12d3-a456-426614174007",
+    "description": "Frontend development",
+    "price": 500.0,
+    "isPaid": true,
+    "paidDate": "2024-09-01",
+    "contract": {
+        "id": 1,
+        "uuid": "523e4567-e89b-12d3-a456-426614174004",
+        "terms": "Develop a website",
+        "status": "in_progress",
+        "contractor": {
+            "id": 1,
+            "uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "firstName": "John",
+            "lastName": "Doe",
+            "profession": "Developer",
+            "balance": 1500.0,
+            "role": "contractor",
+            "createdAt": "2024-09-01T16:51:00.035972",
+            "updatedAt": "2024-09-01T17:00:29.413821"
+        },
+        "client": {
+            "id": 3,
+            "uuid": "323e4567-e89b-12d3-a456-426614174002",
+            "firstName": "Alice",
+            "lastName": "Johnson",
+            "profession": "Project Manager",
+            "balance": 4500.0,
+            "role": "client",
+            "createdAt": "2024-09-01T16:51:00.035972",
+            "updatedAt": "2024-09-01T17:00:29.324826"
+        },
+        "createdAt": "2024-09-01T16:51:00.043242",
+        "updatedAt": "2024-09-01T16:51:00.043242"
+    },
+    "createdAt": "2024-09-01T16:51:00.051863",
+    "updatedAt": "2024-09-01T16:51:00.051863"
+}
+``
 ### Profiles
 
  **Client Profile**
@@ -168,12 +287,10 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
 
   **Response:**
     - Returns the updated balance.
-
-- **Get Profile by ID**
-
-  `GET /api/v1/profiles/{id}`
-
-  Retrieves a profile by its ID.
+    - 
+``
+    Deposit exceeds 25% of total outstanding payments
+``
 
 **Admin Profile**
 - **GET /api/v1/admin/best-profession?start=<date>&end=<date>**
@@ -187,6 +304,8 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
   **Response:**
     - Returns the top-earning profession.
 
+`` Developer``
+
 - **GET /api/v1/admin/best-clients?start=<date>&end=<date>&limit=<integer>**
 
   **Description:** Returns the clients who paid the most for jobs within the specified period. Includes a limit parameter, with a default limit set to 2.
@@ -199,6 +318,49 @@ A comprehensive service for managing contracts and jobs, supporting functionalit
   **Response:**
     - Returns a list of top clients.
 
+
+``
+{
+    "content": [
+        {
+            "id": 3,
+            "uuid": "323e4567-e89b-12d3-a456-426614174002",
+            "firstName": "Alice",
+            "lastName": "Johnson",
+            "profession": "Project Manager",
+            "balance": 4500.0,
+            "role": "client",
+            "createdAt": "2024-09-01T16:51:00.035972",
+            "updatedAt": "2024-09-01T17:00:29.324826"
+        }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 2,
+        "sort": {
+            "empty": true,
+            "sorted": false,
+            "unsorted": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 1,
+    "size": 2,
+    "number": 0,
+    "sort": {
+        "empty": true,
+        "sorted": false,
+        "unsorted": true
+    },
+    "first": true,
+    "numberOfElements": 1,
+    "empty": false
+}
+``
 ## Testing
 
 To run the tests:

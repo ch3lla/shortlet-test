@@ -20,7 +20,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
             "WHERE j.isPaid = true AND j.paidDate BETWEEN :start AND :end " +
             "GROUP BY p.profession " +
             "ORDER BY totalEarned DESC")
-
     List<Object[]> findBestProfession(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     @Query("SELECT p FROM Profile p WHERE p.role = 'client' AND " +
