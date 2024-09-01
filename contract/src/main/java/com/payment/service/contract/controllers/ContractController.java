@@ -25,21 +25,25 @@ public class ContractController {
      * @return A list of active contracts.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Contract> getContractById(
+    public ResponseEntity<?> getContractById(
             @PathVariable Integer id,
             @RequestHeader("profileId") Integer profileId) {
-        Optional<Contract> contractOpt = contractService.getContractById(id);
+        try {
+            Optional<Contract> contractOpt = contractService.getContractById(id);
 
-        if (contractOpt.isPresent()) {
-            Contract contract = contractOpt.get();
-            if (contract.getClient().getId().equals(profileId) ||
-                    contract.getContractor().getId().equals(profileId)) {
-                return ResponseEntity.ok(contract);
+            if (contractOpt.isPresent()) {
+                Contract contract = contractOpt.get();
+                if (contract.getClient().getId().equals(profileId) ||
+                        contract.getContractor().getId().equals(profileId)) {
+                    return ResponseEntity.ok(contract);
+                } else {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                }
             } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

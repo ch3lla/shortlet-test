@@ -27,7 +27,7 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
      */
     @Query("SELECT SUM(j.price) FROM Job j " +
             "JOIN j.contract c " +
-            "WHERE c.status = 'IN_PROGRESS' " +
+            "WHERE c.status = 'in_progress' " +
             "AND j.isPaid = false " +
             "AND (c.client.id = :userId OR c.contractor.id = :userId)")
     Optional<Double> sumOutstandingPaymentsByUserId(@Param("userId") Integer userId);

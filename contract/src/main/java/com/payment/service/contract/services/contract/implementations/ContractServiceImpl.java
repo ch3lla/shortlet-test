@@ -27,8 +27,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public Optional<Contract> getContractById(Integer id) {
-        var response = repository.findById(id);
-        return response;
+        return repository.findById(id);
     }
 
     @Override

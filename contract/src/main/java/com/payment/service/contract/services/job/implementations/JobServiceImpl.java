@@ -61,6 +61,10 @@ public class JobServiceImpl implements JobService {
         // Profile client = profileRepository.findById(clientId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
         Profile contractor = job.getContract().getContractor();
 
+        if (job.getContract().getClient() == null) {
+            throw new IllegalStateException("Contract client is missing");
+        }
+
         if (!job.getIsPaid() && job.getContract().getClient().getId().equals(clientId)) {
             if (client.getBalance() >= job.getPrice()) {
                 client.setBalance(client.getBalance() - job.getPrice());
