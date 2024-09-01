@@ -22,6 +22,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String getBestProfession(LocalDate start, LocalDate end) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("Start and end dates must not be null");
+        }
+
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
         List<Object[]> results = profileRepository.findBestProfession(start, end);
 
         if (!results.isEmpty()) {
