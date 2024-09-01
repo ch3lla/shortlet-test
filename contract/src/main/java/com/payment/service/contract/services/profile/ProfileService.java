@@ -36,10 +36,11 @@ public interface ProfileService {
 
     /**
      * Deposit an amount into a client's balance.
+     * @param profile The profile of the client.
      * @param userId The ID of the client.
      * @param amount The amount to be deposited.
      * @return The updated profile.
      */
-    Profile depositToBalance(Integer userId, Double amount);
+    Profile depositToBalance(Profile profile, Integer userId, Double amount);
 }
 

@@ -21,9 +21,9 @@ public class ProfileController {
      * @return The updated profile with the new balance.
      */
     @PostMapping("/balances/deposit/{userId}")
-    public ResponseEntity<?> depositToBalance(@PathVariable Integer userId, @RequestParam Double amount) {
+    public ResponseEntity<?> depositToBalance(@RequestAttribute("profile") Profile profile, @PathVariable Integer userId, @RequestParam Double amount) {
         try {
-            Profile updatedProfile = profileService.depositToBalance(userId, amount);
+            Profile updatedProfile = profileService.depositToBalance(profile, userId, amount);
             return ResponseEntity.ok(updatedProfile);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

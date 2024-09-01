@@ -56,22 +56,19 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public Job payForJob(Integer jobId, Integer clientId) {
+    public Job payForJob(Integer jobId, Integer clientId, Profile client) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("Job not found"));
-        Profile client = profileRepository.findById(clientId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
+        // Profile client = profileRepository.findById(clientId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
         Profile contractor = job.getContract().getContractor();
 
-        // Ensure the job is unpaid and belongs to the client
         if (!job.getIsPaid() && job.getContract().getClient().getId().equals(clientId)) {
             if (client.getBalance() >= job.getPrice()) {
-                // Transfer funds from client to contractor
                 client.setBalance(client.getBalance() - job.getPrice());
                 contractor.setBalance(contractor.getBalance() + job.getPrice());
 
                 job.setIsPaid(true);
                 job.setPaidDate(LocalDate.now());
 
-                // Save the updated entities
                 profileRepository.save(client);
                 profileRepository.save(contractor);
                 return jobRepository.save(job);

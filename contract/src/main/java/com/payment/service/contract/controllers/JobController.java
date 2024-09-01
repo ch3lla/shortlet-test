@@ -1,6 +1,7 @@
 package com.payment.service.contract.controllers;
 
 import com.payment.service.contract.models.Job;
+import com.payment.service.contract.models.Profile;
 import com.payment.service.contract.services.job.JobService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +36,9 @@ public class JobController {
      * @return The updated job.
      */
     @PostMapping("/{job_id}/pay")
-    public ResponseEntity<?> payForJob(@PathVariable("job_id") Integer jobId, @RequestHeader("profileId") Integer profileId) {
+    public ResponseEntity<?> payForJob(@RequestAttribute Profile profile, @PathVariable("job_id") Integer jobId, @RequestHeader("profileId") Integer profileId) {
         try {
-            Job paidJob = jobService.payForJob(jobId, profileId);
+            Job paidJob = jobService.payForJob(jobId, profileId, profile);
             return ResponseEntity.ok(paidJob);
         } catch (Exception e) {
             e.printStackTrace(); // todo: replace with logger

@@ -42,16 +42,12 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional
-    public Profile depositToBalance(Integer userId, Double amount) {
-        Profile client = profileRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
-
+    public Profile depositToBalance(Profile client, Integer userId, Double amount) {
         double totalOutstandingPayments = jobRepository.sumOutstandingPaymentsByUserId(userId).orElse(0.0);
-        System.out.println(totalOutstandingPayments);
         if (amount > 0.25 * totalOutstandingPayments) {
             throw new IllegalStateException("Deposit exceeds 25% of total outstanding payments");
         }
 
-        // Update the client's balance
         client.setBalance(client.getBalance() + amount);
         return profileRepository.save(client);
 

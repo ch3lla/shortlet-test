@@ -2,6 +2,7 @@ package com.payment.service.contract.services.job;
 
 import com.payment.service.contract.dto.JobDto;
 import com.payment.service.contract.models.Job;
+import com.payment.service.contract.models.Profile;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public interface JobService {
      * @param clientId The ID of the client making the payment.
      * @return The updated job.
      */
-    Job payForJob(Integer jobId, Integer clientId);
+    Job payForJob(Integer jobId, Integer clientId, Profile profile);
 
     /**
      * Update an existing job.
