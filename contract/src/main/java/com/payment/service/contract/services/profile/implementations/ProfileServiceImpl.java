@@ -1,30 +1,23 @@
 package com.payment.service.contract.services.profile.implementations;
 
 import com.payment.service.contract.dto.ProfileDto;
-import com.payment.service.contract.models.ContractStatus;
 import com.payment.service.contract.models.Profile;
-import com.payment.service.contract.repositories.ContractRepository;
 import com.payment.service.contract.repositories.JobRepository;
 import com.payment.service.contract.repositories.ProfileRepository;
 import com.payment.service.contract.services.profile.ProfileService;
 import jakarta.transaction.Transactional;
-import com.payment.service.contract.models.Contract;
-import com.payment.service.contract.models.Job;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final JobRepository jobRepository;
-    private final ContractRepository contractRepository;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, JobRepository jobRepository, ContractRepository contractRepository) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, JobRepository jobRepository) {
         this.profileRepository = profileRepository;
         this.jobRepository = jobRepository;
-        this.contractRepository = contractRepository;
     }
 
     @Override
@@ -52,10 +45,8 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile depositToBalance(Integer userId, Double amount) {
         Profile client = profileRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Client not found"));
 
-        // Calculate the total outstanding payments for unpaid jobs
         double totalOutstandingPayments = jobRepository.sumOutstandingPaymentsByUserId(userId).orElse(0.0);
-
-        // Check if the deposit amount exceeds 25% of total outstanding payments
+        System.out.println(totalOutstandingPayments);
         if (amount > 0.25 * totalOutstandingPayments) {
             throw new IllegalStateException("Deposit exceeds 25% of total outstanding payments");
         }

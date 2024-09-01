@@ -18,6 +18,13 @@ public interface JobRepository extends JpaRepository<Job, Integer> {
      */
     List<Job> findByContractIdInAndIsPaidFalse(List<Integer> contractIds);
 
+    /**
+     * Sums the outstanding payments for a user based on their jobs.
+     *
+     * @param userId The ID of the user for whom to sum outstanding payments.
+     * @return An Optional containing the sum of outstanding payments.
+     *         If no payments are outstanding, the Optional will be empty.
+     */
     @Query("SELECT SUM(j.price) FROM Job j " +
             "JOIN j.contract c " +
             "WHERE c.status = 'IN_PROGRESS' " +
