@@ -38,6 +38,12 @@ public class AdminController {
 
     }
 
+    /**
+     * Endpoint to get the two best clients who paid the most for jobs in the specified date range.
+     * @param start The start date.
+     * @param end The end date.
+     * @return The two bets clients.
+     */
     @GetMapping("/best-clients")
     public ResponseEntity<Page<Profile>> getBestClients(
             @RequestParam("start") LocalDate start,

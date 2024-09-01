@@ -19,6 +19,11 @@ public class ContractController {
         this.contractService = contractService;
     }
 
+    /**
+     * Endpoint to retrieve a contract associated with the requesting user.
+     * @param profileId The ID of the profile making the request (from request headers).
+     * @return A list of active contracts.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Contract> getContractById(
             @PathVariable Integer id,

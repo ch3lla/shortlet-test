@@ -18,6 +18,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         this.profileRepository = profileRepository;
     }
 
+    /**
+     * Checks if the incoming request contains profile id in its header
+     * @param request The HttpServlet request
+     * @param response The HttpServlet response
+     * @param handler
+     * @return boolean, true if request contains profile id else false
+     * @throws NumberFormatException if profile id is invalid
+     */
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String profileIdHeader = request.getHeader("profileId");
