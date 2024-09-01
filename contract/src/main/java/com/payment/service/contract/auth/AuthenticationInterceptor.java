@@ -12,8 +12,11 @@ import java.util.Optional;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
+
+    public AuthenticationInterceptor(ProfileRepository profileRepository) {
+        this.profileRepository = profileRepository;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
