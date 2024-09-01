@@ -1,5 +1,6 @@
 package com.payment.service.contract.services.contract;
 
+import com.payment.service.contract.dto.ContractDto;
 import com.payment.service.contract.models.Contract;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ContractService {
      * @param contract The contract to be created.
      * @return The created contract.
      */
-    Contract createContract(Contract contract);
+    Contract createContract(ContractDto contract);
 
     /**
      * Retrieve a contract by its ID.
